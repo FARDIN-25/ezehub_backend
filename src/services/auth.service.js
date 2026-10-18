@@ -318,7 +318,7 @@ class AuthService {
       },
     });
 
-    const permissions = user.role.permissions.map((rp) => rp.permission.slug);
+    const permissions = user.role.permissions.map((rp) => rp.permission.code);
 
     return {
       accessToken,
@@ -329,9 +329,9 @@ class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         scope,
-        role: { id: user.role.id, name: user.role.name, slug: user.role.slug },
+        role: { id: user.role.id, name: user.role.name, code: user.role.code },
         permissions,
-        ...(tenant && { tenant: { id: tenant.id, name: tenant.name, slug: tenant.slug, status: tenant.status } }),
+        ...(tenant && { tenant: { id: tenant.id, name: tenant.name, status: tenant.status } }),
       },
     };
   }

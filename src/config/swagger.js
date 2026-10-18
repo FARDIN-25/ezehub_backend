@@ -294,7 +294,7 @@ const options = {
         post: {
           tags: ['Platform - Tenants'],
           summary: 'Create a new tenant',
-          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['name', 'slug', 'email', 'adminEmail', 'adminPassword', 'adminFirstName', 'adminLastName'], properties: { name: { type: 'string' }, slug: { type: 'string' }, email: { type: 'string' }, phone: { type: 'string' }, plan: { type: 'string', enum: ['STARTER', 'GROWTH', 'BUSINESS', 'ENTERPRISE'] }, adminEmail: { type: 'string' }, adminPassword: { type: 'string' }, adminFirstName: { type: 'string' }, adminLastName: { type: 'string' } } } } } },
+          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['name', 'email', 'adminEmail', 'adminPassword', 'adminFirstName', 'adminLastName'], properties: { name: { type: 'string' }, email: { type: 'string' }, phone: { type: 'string' }, plan: { type: 'string', enum: ['STARTER', 'GROWTH', 'BUSINESS', 'ENTERPRISE'] }, adminEmail: { type: 'string' }, adminPassword: { type: 'string' }, adminFirstName: { type: 'string' }, adminLastName: { type: 'string' } } } } } },
           responses: { 201: { description: 'Tenant created' } },
         },
       },
@@ -1008,7 +1008,7 @@ const options = {
       // ═══════════════════════════════════════════════════════════
       '/tenant/roles': {
         get: { tags: ['Tenant - Roles'], summary: 'List all roles with permissions', responses: { 200: { description: 'Roles with permission count' } } },
-        post: { tags: ['Tenant - Roles'], summary: 'Create a new role', requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['name'], properties: { name: { type: 'string' }, slug: { type: 'string' }, description: { type: 'string' }, permissionIds: { type: 'array', items: { type: 'string' } } } } } } }, responses: { 201: { description: 'Role created' } } },
+        post: { tags: ['Tenant - Roles'], summary: 'Create a new role', requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['name'], properties: { name: { type: 'string' }, description: { type: 'string' }, permissionIds: { type: 'array', items: { type: 'string' } } } } } } }, responses: { 201: { description: 'Role created' } } },
       },
       '/tenant/roles/{id}': {
         put: { tags: ['Tenant - Roles'], summary: 'Update role', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { 200: { description: 'Role updated' } } },

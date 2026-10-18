@@ -685,9 +685,12 @@ export const getRoles = wrap(async (req, res) => {
 });
 
 export const createRole = wrap(async (req, res) => {
-  const { name, slug, description, permissionIds } = req.body;
+  const { name, description, permissionIds } = req.body;
+  // Role.code is globally unique; derive it from the name and scope it to the
+  // tenant so the same role name can exist across different tenants.
+  const code = `${name.toLowerCase().replace(/\s+/g, '-')}-${req.tenantId}`;
   const role = await prisma.role.create({
-    data: { name, slug: slug || name.toLowerCase().replace(/\s+/g, '-'), description, scope: 'TENANT', tenantId: req.tenantId },
+    data: { name, code, description, scope: 'TENANT', tenantId: req.tenantId },
   });
   if (permissionIds?.length) {
     await prisma.rolePermission.createMany({

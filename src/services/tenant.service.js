@@ -7,9 +7,9 @@ import { parsePagination, parseSort, parseSearch } from '../utils/response.js';
 class TenantService {
   async create(data) {
     const existing = await prisma.tenant.findFirst({
-      where: { OR: [{ slug: data.slug }, { email: data.email }] },
+      where: { email: data.email },
     });
-    if (existing) throw new ConflictError('Tenant with this slug or email already exists');
+    if (existing) throw new ConflictError('Tenant with this email already exists');
 
     const planConfig = SUBSCRIPTION_PLANS[data.plan || 'STARTER'];
 
@@ -17,7 +17,6 @@ class TenantService {
       const tenant = await tx.tenant.create({
         data: {
           name: data.name,
-          slug: data.slug,
           email: data.email,
           phone: data.phone,
           address: data.address,
@@ -47,7 +46,7 @@ class TenantService {
       const adminRole = await tx.role.create({
         data: {
           name: 'Tenant Admin',
-          slug: TENANT_ROLES.ADMIN,
+          code: `${TENANT_ROLES.ADMIN}-${tenant.id}`,
           scope: 'TENANT',
           tenantId: tenant.id,
           isSystem: true,
@@ -55,7 +54,7 @@ class TenantService {
       });
 
       const allPerms = await tx.permission.findMany();
-      const tenantPerms = allPerms.filter((p) => !p.slug.startsWith('tenants:') && !p.slug.startsWith('platform:'));
+      const tenantPerms = allPerms.filter((p) => !p.code.startsWith('tenants:') && !p.code.startsWith('platform:'));
       await tx.rolePermission.createMany({
         data: tenantPerms.map((p) => ({ roleId: adminRole.id, permissionId: p.id })),
       });
@@ -73,7 +72,7 @@ class TenantService {
 
       for (const bt of BUILDING_TYPES) {
         await tx.buildingType.create({
-          data: { tenantId: tenant.id, name: bt.name, slug: bt.slug, isSystem: true },
+          data: { tenantId: tenant.id, name: bt.name, isSystem: true },
         });
       }
 
@@ -84,7 +83,7 @@ class TenantService {
   async findAll(query) {
     const { page, limit, skip } = parsePagination(query);
     const orderBy = parseSort(query, ['createdAt', 'name', 'status'], 'createdAt');
-    const search = parseSearch(query, ['name', 'email', 'slug']);
+    const search = parseSearch(query, ['name', 'email']);
 
     const where = { deletedAt: null, ...search };
     if (query.status) where.status = query.status;

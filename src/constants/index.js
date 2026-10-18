@@ -99,20 +99,20 @@ export const PERMISSIONS = {
 };
 
 export const BUILDING_TYPES = [
-  { name: 'Paying Guest (PG)', slug: 'pg' },
-  { name: 'Hostel', slug: 'hostel' },
-  { name: 'Dormitory', slug: 'dormitory' },
-  { name: 'Co-Living Space', slug: 'co-living' },
-  { name: 'Service Apartment', slug: 'service-apartment' },
-  { name: '1RK', slug: '1rk' },
-  { name: '1BHK', slug: '1bhk' },
-  { name: '2BHK', slug: '2bhk' },
-  { name: '3BHK', slug: '3bhk' },
-  { name: 'Villa', slug: 'villa' },
-  { name: 'Guest House', slug: 'guest-house' },
-  { name: 'Corporate Accommodation', slug: 'corporate' },
-  { name: 'Rental Apartment', slug: 'rental-apartment' },
-  { name: 'Other', slug: 'other' },
+  { name: 'Paying Guest (PG)' },
+  { name: 'Hostel' },
+  { name: 'Dormitory' },
+  { name: 'Co-Living Space' },
+  { name: 'Service Apartment' },
+  { name: '1RK' },
+  { name: '1BHK' },
+  { name: '2BHK' },
+  { name: '3BHK' },
+  { name: 'Villa' },
+  { name: 'Guest House' },
+  { name: 'Corporate Accommodation' },
+  { name: 'Rental Apartment' },
+  { name: 'Other' },
 ];
 
 export const INVENTORY_CATEGORIES = [

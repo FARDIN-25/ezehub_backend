@@ -34,7 +34,7 @@ export const requireTenant = (req, _res, next) => {
 
 export const requireRole = (...roles) => {
   return (req, _res, next) => {
-    if (!req.user || !roles.includes(req.user.role.slug)) {
+    if (!req.user || !roles.includes(req.user.role.code)) {
       return next(new ForbiddenError('Insufficient role'));
     }
     next();

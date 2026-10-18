@@ -37,7 +37,7 @@ export const authenticate = async (req, _res, next) => {
         lastName: user.lastName,
         scope: 'PLATFORM',
         role: user.role,
-        permissions: user.role.permissions.map((rp) => rp.permission.slug),
+        permissions: user.role.permissions.map((rp) => rp.permission.code),
       };
     } else if (decoded.scope === 'RESIDENT') {
       const resident = await prisma.resident.findFirst({
@@ -79,7 +79,7 @@ export const authenticate = async (req, _res, next) => {
         tenantId: user.tenantId,
         tenant: user.tenant,
         role: user.role,
-        permissions: user.role.permissions.map((rp) => rp.permission.slug),
+        permissions: user.role.permissions.map((rp) => rp.permission.code),
         isOnHold: user.tenant.status === 'ON_HOLD',
       };
     }

@@ -5,14 +5,9 @@ import { parsePagination, parseSort, parseSearch } from '../utils/response.js';
 class BuildingService {
   async create(tenantId, data) {
     const buildingType = await prisma.buildingType.findFirst({
-      where: { 
-        OR: [
-          { id: data.buildingTypeId },
-          { slug: data.buildingTypeId }
-        ],
-        AND: [
-          { OR: [{ tenantId }, { tenantId: null }] }
-        ]
+      where: {
+        id: data.buildingTypeId,
+        OR: [{ tenantId }, { tenantId: null }],
       },
     });
     if (!buildingType) throw new NotFoundError('Building type');

@@ -60,7 +60,6 @@
 ```json
 {
   "name": "Sunrise PG",
-  "slug": "sunrise-pg",
   "email": "contact@sunrisepg.com",
   "phone": "9876543210",
   "plan": "STARTER",

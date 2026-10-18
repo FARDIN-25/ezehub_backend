@@ -86,7 +86,6 @@ export const residentCreateVisitorSchema = z.object({
 export const createTenantSchema = z.object({
   body: z.object({
     name: z.string().min(2).max(100),
-    slug: z.string().min(2).max(50).regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens').transform(val => val.toLowerCase()),
     email: z.string().email(),
     phone: z.string().regex(/^\d{10}$/, 'Phone must be 10 digits').optional().or(z.literal('')),
     address: z.string().optional(),

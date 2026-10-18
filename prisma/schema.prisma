@@ -244,7 +244,7 @@ model PlatformUser {
 model Role {
   id          String    @id @default(uuid())
   name        String
-  slug        String    @unique
+  code        String    @unique
   description String?
   scope       UserScope
   tenantId    String?   @map("tenant_id")
@@ -259,7 +259,7 @@ model Role {
   tenantUsers     TenantUser[]
   staffMembers    Staff[]
 
-  @@unique([slug, tenantId])
+  @@unique([code, tenantId])
   @@index([tenantId])
   @@map("roles")
 }
@@ -267,7 +267,7 @@ model Role {
 model Permission {
   id          String   @id @default(uuid())
   name        String
-  slug        String   @unique
+  code        String   @unique
   module      String
   description String?
   createdAt   DateTime @default(now()) @map("created_at")
@@ -292,7 +292,6 @@ model RolePermission {
 model Tenant {
   id              String       @id @default(uuid())
   name            String
-  slug            String       @unique
   email           String
   phone           String?
   logo            String?
@@ -340,7 +339,6 @@ model Tenant {
   foodMenus       FoodMenu[]
 
   @@index([status])
-  @@index([slug])
   @@map("tenants")
 }
 
@@ -475,7 +473,6 @@ model BuildingType {
   id          String    @id @default(uuid())
   tenantId    String?   @map("tenant_id")
   name        String
-  slug        String
   description String?
   config      Json      @default("{}")
   isSystem    Boolean   @default(false) @map("is_system")
@@ -487,7 +484,7 @@ model BuildingType {
   tenant    Tenant?    @relation(fields: [tenantId], references: [id])
   buildings Building[]
 
-  @@unique([slug, tenantId])
+  @@unique([name, tenantId])
   @@map("building_types")
 }
 

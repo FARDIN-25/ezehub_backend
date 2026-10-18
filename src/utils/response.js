@@ -62,9 +62,10 @@ export const generateReceiptNumber = () => {
   return `${prefix}-${random}`;
 };
 
-export const generateInvoiceNumber = (tenantSlug) => {
+export const generateInvoiceNumber = (tenantName = 'INV') => {
   const date = new Date();
-  const prefix = `INV-${tenantSlug.toUpperCase().substring(0, 3)}-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}`;
+  const code = String(tenantName).replace(/[^a-zA-Z0-9]/g, '').toUpperCase().substring(0, 3) || 'INV';
+  const prefix = `INV-${code}-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}`;
   const random = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `${prefix}-${random}`;
 };
