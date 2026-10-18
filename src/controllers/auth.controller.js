@@ -1,6 +1,13 @@
 import authService from '../services/auth.service.js';
 import { successResponse } from '../utils/response.js';
 
+export const login = async (req, res, next) => {
+  try {
+    const result = await authService.login(req.body.email, req.body.password);
+    successResponse(res, result, 'Login successful');
+  } catch (error) { next(error); }
+};
+
 export const platformLogin = async (req, res, next) => {
   try {
     const result = await authService.platformLogin(req.body.email, req.body.password);

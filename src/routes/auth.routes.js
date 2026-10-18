@@ -14,6 +14,9 @@ import * as authController from '../controllers/auth.controller.js';
 
 const router = Router();
 
+// Unified login — auto-detects platform vs tenant account (web portal).
+router.post('/login', authLimiter, validate(loginSchema), authController.login);
+// Legacy scoped endpoints kept for the mobile apps / backward compatibility.
 router.post('/platform/login', authLimiter, validate(loginSchema), authController.platformLogin);
 router.post('/tenant/login', authLimiter, validate(loginSchema), authController.tenantLogin);
 router.post('/resident/send-otp', authLimiter, validate(residentSendOtpSchema), authController.residentSendOtp);

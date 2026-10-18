@@ -190,22 +190,31 @@ export const createResidentSchema = z.object({
 });
 
 export const createStaffSchema = z.object({
-  body: z.object({
-    buildingId: z.string().uuid().optional(),
-    roleId: z.string().uuid(),
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
-    email: z.string().email(),
-    phone: z.string().min(10),
-    department: z.string().optional(),
-    designation: z.string().optional(),
-    joiningDate: z.string().datetime(),
-    salary: z.number().min(0).default(0),
-    address: z.string().optional(),
-    emergencyContact: z.record(z.unknown()).optional(),
-    createUserAccount: z.boolean().default(false),
-    password: z.string().min(8).optional(),
-  }),
+  body: z
+    .object({
+      buildingId: z.string().uuid().optional(),
+      roleId: z.string().uuid(),
+      firstName: z.string().min(1),
+      lastName: z.string().min(1),
+      email: z.string().email(),
+      phone: z.string().min(10),
+      department: z.string().optional(),
+      designation: z.string().optional(),
+      joiningDate: z.string().datetime(),
+      salary: z.number().min(0).default(0),
+      address: z.string().optional(),
+      emergencyContact: z.record(z.unknown()).optional(),
+      createUserAccount: z.boolean().default(false),
+      // Optional separate email for the login account. The staff service
+      // uses this when provided, falling back to `email`.
+      loginEmail: z.string().email().optional().or(z.literal('')),
+      password: z.string().min(8).optional(),
+    })
+    // When a login account is requested, a valid 8+ char password is required.
+    .refine((d) => !d.createUserAccount || (d.password && d.password.length >= 8), {
+      message: 'Password (min 8 characters) is required to create a login account',
+      path: ['password'],
+    }),
 });
 
 export const createInventorySchema = z.object({

@@ -22,6 +22,31 @@ class AuthService {
     return this._generateTokens(user, 'PLATFORM');
   }
 
+  /**
+   * Unified login used by the single web portal. Auto-detects the account
+   * type: platform admins live in platformUser, tenant users in tenantUser.
+   * We try platform first (smaller table, super-admins), then tenant.
+   * A generic error is returned if neither matches so we don't leak which
+   * table an email exists in.
+   */
+  async login(email, password) {
+    const platformUser = await prisma.platformUser.findFirst({
+      where: { email, isActive: true, deletedAt: null },
+    });
+    if (platformUser) {
+      return this.platformLogin(email, password);
+    }
+
+    const tenantUser = await prisma.tenantUser.findFirst({
+      where: { email, isActive: true, deletedAt: null },
+    });
+    if (tenantUser) {
+      return this.tenantLogin(email, password);
+    }
+
+    throw new UnauthorizedError('Invalid email or password');
+  }
+
   async tenantLogin(email, password) {
     const user = await prisma.tenantUser.findFirst({
       where: { email, isActive: true, deletedAt: null },
